@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	body {
+		@apply font-["Space_Grotesk"] text-lg font-medium text-primary-900 [letter-spacing:1px];
+	}
+
+	input {
+		@apply font-normal [letter-spacing:1px];
+	}
+
+	#root {
+		@apply min-h-screen;
+	}
+}
+
+@layer components {
+	.btn {
+		@apply flex justify-center rounded-md px-8 py-2;
+
+		&-primary {
+			@apply btn bg-primary-900 text-white;
+		}
+	}
+}
