@@ -39,8 +39,9 @@ This, in my opinion, allows for a smoother UX as it leaves very little for the u
 
 ### Links
 
--   Solution URL: [Add solution URL here](https://your-solution-url.com)
--   Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+-   [Solution](https://your-solution-url.com)
+-   [Github repo](https://github.com/tsukiongithub/interactive-card-details-form)
+-   [Live site](https://tsukiongithub.github.io/interactive-card-details-form/) - ( using github pages )
 
 <br>
 
