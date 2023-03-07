@@ -69,7 +69,7 @@ const App = () => {
 									.match(/.{1,4}/gm)
 									?.join(" ") || "0000 0000 0000 0000"}
 							</div>
-							<div className="absolute bottom-4 left-4 max-w-[12rem] text-xs uppercase text-white lg:bottom-5 lg:left-6">
+							<div className="absolute bottom-4 left-4 max-w-[12rem] font-['Roboto_Mono'] text-xs uppercase text-white lg:bottom-5 lg:left-6">
 								{cardholder || "Jane Appleseed"}
 							</div>
 							<div className="absolute bottom-4 right-4 font-['Roboto_Mono'] text-xs text-white lg:bottom-5 lg:right-6">
