@@ -18,7 +18,9 @@ const App = () => {
 	const [formCompleted, setFormCompleted] = useState(false);
 
 	const handleSubmit = (ev: FormEvent) => {
+		console.log(ev);
 		ev.preventDefault();
+
 		setFormCompleted(true);
 		console.log("submitted card info");
 	};
@@ -46,7 +48,7 @@ const App = () => {
 								src={cardBack}
 								alt="credit card back"
 							/>
-							<div className="absolute top-[4.25rem] right-8 text-end text-sm text-white lg:right-10 lg:top-[5.5rem] lg:text-lg">
+							<div className="absolute top-[4.25rem] right-8 text-end font-['Roboto_Mono'] text-sm text-white lg:right-10 lg:top-[5.5rem] lg:text-lg">
 								{cvc || "000"}
 							</div>
 						</div>
@@ -61,7 +63,7 @@ const App = () => {
 								src={cardLogo}
 								alt="credit card logo"
 							/>
-							<div className="absolute left-4 bottom-12 flex justify-between text-xl font-normal text-white [letter-spacing:2px] lg:left-6 lg:bottom-14 lg:text-2xl">
+							<div className="absolute left-4 bottom-12 flex justify-between font-['Roboto_Mono'] text-xl font-normal text-white [letter-spacing:2px] lg:left-6 lg:bottom-14 lg:text-2xl">
 								{cardNumber
 									.padEnd(16, "0")
 									.match(/.{1,4}/gm)
@@ -70,8 +72,8 @@ const App = () => {
 							<div className="absolute bottom-4 left-4 max-w-[12rem] text-xs uppercase text-white lg:bottom-5 lg:left-6">
 								{cardholder || "Jane Appleseed"}
 							</div>
-							<div className="absolute bottom-4 right-4 text-xs text-white lg:bottom-5 lg:right-6">
-								{`${expMonth || "00"} / ${expYear || "00"}`}
+							<div className="absolute bottom-4 right-4 font-['Roboto_Mono'] text-xs text-white lg:bottom-5 lg:right-6">
+								{`${expMonth || "00"}/${expYear || "00"}`}
 							</div>
 						</div>
 					</div>
@@ -100,7 +102,7 @@ const App = () => {
 							</div>
 						) : (
 							<form
-								className="flex flex-col gap-4 px-8"
+								className="flex flex-col gap-6 px-8"
 								onSubmit={handleSubmit}
 							>
 								<div>
@@ -110,58 +112,71 @@ const App = () => {
 									>
 										Cardholder name
 									</label>
-									<div className="rounded-md bg-primary-100 from-lg-from to-lg-to p-px focus-within:bg-gradient-to-r">
-										<input
-											className="w-full rounded-[5px] py-1 px-2 focus:outline-none"
-											type="text"
-											id="cardholderInput"
-											required
-											value={cardholder}
-											onChange={(ev) => {
-												const value = ev.target.value;
-												if (
-													nameRegex.test(value) ||
-													value === ""
-												) {
-													setCardholder(value);
-												}
-											}}
-											placeholder="e.g. Jane Appleseed"
-											maxLength={30}
-										/>
+									<div className="relative">
+										<div className="rounded-md bg-primary-100 from-lg-from to-lg-to p-px focus-within:bg-gradient-to-r">
+											<input
+												className="w-full rounded-[5px] py-1 px-2 focus:outline-none"
+												type="text"
+												id="cardholderInput"
+												required
+												value={cardholder}
+												onChange={(ev) => {
+													const value =
+														ev.target.value;
+													if (
+														nameRegex.test(value) ||
+														value === ""
+													) {
+														setCardholder(value);
+													}
+												}}
+												onInvalid={(ev) => {
+													ev.preventDefault();
+												}}
+												placeholder="e.g. Jane Appleseed"
+												maxLength={30}
+											/>
+										</div>
 									</div>
 								</div>
-								<div>
+								<div className="relative">
 									<label
 										className="text-xs uppercase xs:text-sm"
 										htmlFor="cardNumberInput"
 									>
 										Card number
 									</label>
-									<div className="rounded-md bg-primary-100 from-lg-from to-lg-to p-px focus-within:bg-gradient-to-r">
-										<input
-											className="w-full rounded-[5px] py-1 px-2 focus:outline-none"
-											type="text"
-											id="cardNumberInput"
-											required
-											value={
-												cardNumber !== ""
-													? cardNumber
-															.match(/.{1,4}/gm)
-															?.join(" ")
-													: ""
-											}
-											onChange={(ev) => {
-												const value =
-													ev.target.value.replace(
-														/\D/gm,
-														""
-													);
-												setCardNumber(value);
-											}}
-											placeholder="e.g. 1234 5678 9123 0000"
-											maxLength={19}
-										/>
+									<div className="relative">
+										<div className="rounded-md bg-primary-100 from-lg-from to-lg-to p-px focus-within:bg-gradient-to-r">
+											<input
+												className="w-full rounded-[5px] py-1 px-2 focus:outline-none"
+												type="text"
+												id="cardNumberInput"
+												required
+												value={
+													cardNumber !== ""
+														? cardNumber
+																.match(
+																	/.{1,4}/gm
+																)
+																?.join(" ")
+														: ""
+												}
+												onChange={(ev) => {
+													const value =
+														ev.target.value.replace(
+															/\D/gm,
+															""
+														);
+													setCardNumber(value);
+												}}
+												onInvalid={(ev) => {
+													ev.preventDefault();
+												}}
+												placeholder="e.g. 1234 5678 9123 0000"
+												maxLength={19}
+											/>
+										</div>
 									</div>
 								</div>
 								<div className="flex gap-2">
@@ -170,43 +185,53 @@ const App = () => {
 											Exp. date (mm/yy)
 										</label>
 										<div className="flex gap-2">
-											<div className="rounded-md bg-primary-100 from-lg-from to-lg-to p-px focus-within:bg-gradient-to-r">
-												<input
-													className="w-full rounded-[5px] py-1 px-2 focus:outline-none"
-													type="tel"
-													id="expMonthInput"
-													required
-													value={expMonth}
-													onChange={(ev) => {
-														const value =
-															ev.target.value.replace(
-																/\D/gm,
-																""
-															);
-														setExpMonth(value);
-													}}
-													placeholder="MM"
-													maxLength={2}
-												/>
+											<div className="relative">
+												<div className="rounded-md bg-primary-100 from-lg-from to-lg-to p-px focus-within:bg-gradient-to-r">
+													<input
+														className="w-full rounded-[5px] py-1 px-2 focus:outline-none"
+														type="tel"
+														id="expMonthInput"
+														required
+														value={expMonth}
+														onChange={(ev) => {
+															const value =
+																ev.target.value.replace(
+																	/\D/gm,
+																	""
+																);
+															setExpMonth(value);
+														}}
+														onInvalid={(ev) => {
+															ev.preventDefault();
+														}}
+														placeholder="MM"
+														maxLength={2}
+													/>
+												</div>
 											</div>
-											<div className="rounded-md bg-primary-100 from-lg-from to-lg-to p-px focus-within:bg-gradient-to-r">
-												<input
-													className="w-full rounded-[5px] py-1 px-2 focus:outline-none"
-													type="tel"
-													id="expYearInput"
-													required
-													value={expYear}
-													onChange={(ev) => {
-														const value =
-															ev.target.value.replace(
-																/\D/gm,
-																""
-															);
-														setExpYear(value);
-													}}
-													placeholder="YY"
-													maxLength={2}
-												/>
+											<div className="relative">
+												<div className="rounded-md bg-primary-100 from-lg-from to-lg-to p-px focus-within:bg-gradient-to-r">
+													<input
+														className="w-full rounded-[5px] py-1 px-2 focus:outline-none"
+														type="tel"
+														id="expYearInput"
+														required
+														value={expYear}
+														onChange={(ev) => {
+															const value =
+																ev.target.value.replace(
+																	/\D/gm,
+																	""
+																);
+															setExpYear(value);
+														}}
+														onInvalid={(ev) => {
+															ev.preventDefault();
+														}}
+														placeholder="YY"
+														maxLength={2}
+													/>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -217,28 +242,33 @@ const App = () => {
 										>
 											CVC
 										</label>
-										<div className="rounded-md bg-primary-100 from-lg-from to-lg-to p-px focus-within:bg-gradient-to-r">
-											<input
-												className="w-full rounded-[5px] py-1 px-2 focus:outline-none"
-												type="tel"
-												id="CVCInput"
-												required
-												value={cvc}
-												onChange={(ev) => {
-													const value =
-														ev.target.value.replace(
-															/\D/gm,
-															""
-														);
-													setCvc(value);
-												}}
-												maxLength={3}
-												placeholder="e.g. 123"
-											/>
+										<div className="relative">
+											<div className="rounded-md bg-primary-100 from-lg-from to-lg-to p-px focus-within:bg-gradient-to-r">
+												<input
+													className="w-full rounded-[5px] py-1 px-2 focus:outline-none"
+													type="tel"
+													id="CVCInput"
+													required
+													value={cvc}
+													onChange={(ev) => {
+														const value =
+															ev.target.value.replace(
+																/\D/gm,
+																""
+															);
+														setCvc(value);
+													}}
+													onInvalid={(ev) => {
+														ev.preventDefault();
+													}}
+													maxLength={3}
+													placeholder="e.g. 123"
+												/>
+											</div>
 										</div>
 									</div>
 								</div>
-								<button className="mt-2 w-full rounded-md bg-primary-900 px-4 py-2 text-white">
+								<button className="mt-2 w-full rounded-md bg-primary-900 px-4 py-3 text-white">
 									Confirm
 								</button>
 							</form>
